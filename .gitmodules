@@ -1,0 +1,4 @@
+[submodule "external/Hooking.Patterns"]
+	path = external/Hooking.Patterns
+	url = https://github.com/ThirteenAG/Hooking.Patterns.git
+	branch = master
