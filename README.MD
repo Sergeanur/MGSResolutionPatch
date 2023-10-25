@@ -3,9 +3,9 @@
 This is an experimental ASI Plugin for Steam releases of Metal Gear Solid 2 and Metal Gear Solid 3.
 It allows to change ingame resolution via ini config.
 
-Recommended for play with MGS 3 at resolutions 1920x1080 and 3840x2160.
+Recommended for play with MGS 3 at resolutions 1920x1080, 2560x1440 and 3840x2160.
 The plugin is compatible with MGS 2, however increased resolution introduces noticeable bugs to the UI.
-Resolutions other than 1920x1080 and 3840x2160 are not guaranteed to produce an adequate image (it might be stretched), but I didn't test every possible resolution that is out there, so you might as well try whatever resolution you want.
+Resolutions other than above mentioned are not guaranteed to produce an adequate image (it might be stretched), but I didn't test every possible resolution that is out there, so you might as well try whatever resolution you want.
 
 ## Installation
 
