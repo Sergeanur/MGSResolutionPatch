@@ -28,6 +28,44 @@ void SetResolutionHook(hook::pattern& pattern, const ResEntry& newResolution)
 
         VirtualProtect(pattern.get_first(0), 0x100, protect[0], &protect[1]);
     }
+
+    // UI fix (MGS 2)
+    pattern = hook::pattern("66 0F 6E 45 F8");
+    if (!pattern.empty())
+    {
+        // X scale constant used in some other code too, so move it to the other place for safety reasons
+        float* pXScale = (float*)((char*)pattern.get_first(9+4) + *(int*)pattern.get_first(9));
+        float XScale = *pXScale * ((float)newResolution.ResolutionX / 1280.0f);
+        pXScale -= 35; // some align space after 'vector too long'
+
+        if (VirtualProtect(pXScale, 4, PAGE_READWRITE, &protect[0]))
+        {
+            *pXScale = XScale;
+            VirtualProtect(pXScale, 4, protect[0], &protect[1]);
+        }
+
+        if (VirtualProtect(pattern.get_first(9), 4, PAGE_READWRITE, &protect[0]))
+        {
+            *(int*)pattern.get_first(9) -= 0x8C;
+            VirtualProtect(pattern.get_first(9), 4, protect[0], &protect[1]);
+        }
+
+        if (VirtualProtect(pattern.get_first(52), 4, PAGE_READWRITE, &protect[0]))
+        {
+            *(int*)pattern.get_first(52) -= 0x8C;
+            VirtualProtect(pattern.get_first(52), 4, protect[0], &protect[1]);
+        }
+
+        // Y scale only used once, so modify in-place
+        float* pYScale = (float*)((char*)pattern.get_first(0x64) + *(int*)pattern.get_first(0x60));
+        float YScale = *pYScale * ((float)newResolution.ResolutionY / 720.0f);
+        if (VirtualProtect(pYScale, 4, PAGE_READWRITE, &protect[0]))
+        {
+            *pYScale = YScale;
+            VirtualProtect(pYScale, 4, protect[0], &protect[1]);
+        }
+    }
+    
 }
 
 ResEntry newResolution;
